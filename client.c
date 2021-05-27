@@ -1,6 +1,7 @@
 #include <signal.h>
 #include <unistd.h>
 #include <limits.h>
+#include <stdio.h>
 
 int	ft_puts(char *s, int fd)
 {
@@ -40,9 +41,11 @@ int	ft_sendstr(int pid, char *s)
 	int	i;
 
 	i = 0;
-	while (i < 8 || s[i / 8])
+	while ((!s[0] && i < 8) || (s[0] && s[i / 8]))
 	{
-		kill(pid, (int []){SIGUSR2, SIGUSR1}[s[i / 8] >> (i % 8) & 1]);
+		kill(pid, (int []){SIGUSR2, SIGUSR1, 0}[s[i / 8] >> (i % 8) & 1]);
+		if (i % 8 == 0)
+			write(2, &s[i / 8], 1);
 		i++;
 		usleep(42);
 	}
@@ -56,16 +59,16 @@ int	main(int ac, char **av)
 
 	if (ac < 3 && ft_puts("usage: ./client server-PID message", 2))
 		return (0);
-	if ((ft_atoi_p(av[1], &pid) || pid <= 0 || kill(pid, 0)) && ft_puts("Error: incorrect PID", 2))
+	if ((ft_atoi_p(av[1], &pid) || pid <= 0 || kill(pid, 0))
+		&& ft_puts("Error: incorrect PID", 2))
 		return (1);
-	j = 2;
-	while (j < ac)
+	j = 1;
+	while (++j < ac)
 	{
 		ft_sendstr(pid, av[j]);
-		if (av[++j])
+		if (j < ac - 1)
 			ft_sendstr(pid, " ");
 	}
-	ft_sendstr(pid, "\n");
 	ft_sendstr(pid, "");
 	return (0);
 }

@@ -53,7 +53,7 @@ void	sig(int sn)
 
 int	main(int ac, char **av)
 {
-	if (ac > 1 && av && ft_puts("usage: ./server", 2))
+	if (ac > 1 && av && ft_puts("usage: ./server (with no args)", 2))
 		return (0);
 	write(1, "pid: ", 5) && ft_putnbr_fd(getpid(), 1);
 	if ((signal(SIGUSR1, sig) == SIG_ERR || signal(SIGUSR2, sig) == SIG_ERR)

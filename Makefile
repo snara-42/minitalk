@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: snara <snara@student.42tokyo.jp>           +#+  +:+       +#+         #
+#    By: snara </var/mail/snara>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/11/02 13:59:38 by snara             #+#    #+#              #
-#    Updated: 2021/05/27 16:26:28 by subaru           ###   ########.fr        #
+#    Created: 2021/05/27 18:50:26 by snara             #+#    #+#              #
+#    Updated: 2021/05/27 19:56:01 by snara            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,17 +20,23 @@ cobjs = $(csrcs:.c=.o)
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror 
+ifeq ($(MAKECMDGOALS),debug)
+CFLAGS += -fsanitize=address
+endif
+
 .c.o:
 	${CC} ${CFLAGS} -c $<
 
 all:	$(sname) $(cname)
 $(sname):	$(sobjs)
-		$(CC) $(sobjs) -o $(sname)
+		$(CC) ${CFLAGS} $< -o $@
 $(cname):	$(cobjs)
-		$(CC) $(cobjs) -o $(cname)
+		$(CC) ${CFLAGS} $< -o $@
 
 bonus:
 		make WITHBONUS=1 all
+
+debug:	all
 
 clean:
 		rm -f $(sobjs) $(cobjs)
