@@ -9,7 +9,7 @@ void	sig(int sn)
 	c = ((c & ~(1 << i)) | (sn == SIGUSR1) << i);
 	if (++i % (8 * sizeof(int)) == 0 && n++ == 0)
 	{
-		if (write(2, "\nfrom: ", 7) && ft_putnbr_fd(c, 2)
+		if (c > 0 && write(2, "\nfrom: ", 7) && ft_putnbr_fd(c, 2)
 			&& kill(c, SIGUSR1))
 			ft_puts("Error: incorrect PID", 2);
 		i = 0;
@@ -17,9 +17,9 @@ void	sig(int sn)
 	}
 	else if (i % 8 == 0 && n > 0)
 	{
-		if (c == END)
+		if (c == EOT)
 			n = 0;
-		else if (c & 0xff)
+		else if ((c & 0xff) != 0 && (c & 0xff) != 0x7f)
 			write(1, &c, 1);
 		i = 0;
 		c <<= 8;
@@ -33,7 +33,7 @@ int	main(int ac, char **av)
 	if ((signal(SIGUSR1, sig) == SIG_ERR || signal(SIGUSR2, sig) == SIG_ERR)
 		&& ft_puts("Error: SIG_ERR", 2))
 		return (1);
-	write(1, "pid: ", 5) && ft_putnbr_fd(getpid(), 1);
+	(void)(write(1, "pid: ", 5) + ft_putnbr_fd(getpid(), 1));
 	while (1)
 		pause();
 	return (0);

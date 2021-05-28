@@ -6,7 +6,7 @@
 /*   By: snara </var/mail/snara>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 21:49:52 by snara             #+#    #+#             */
-/*   Updated: 2021/05/28 02:57:51 by snara            ###   ########.fr       */
+/*   Updated: 2021/05/28 11:38:55 by subaru           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdlib.h>
 # include <limits.h>
 # include <stdio.h>
-# define END 0
+# define EOT 4
 
 int	ft_puts(char *s, int fd);
 int	ft_putnbr_fd(int n, int fd);

@@ -9,7 +9,10 @@ int	ft_puts(char *s, int fd)
 		return (0);
 	while (s[i])
 		i++;
-	return (write(fd, s, i) + write(fd, "\n", 1));
+	if (fd < 0)
+		return (write(-fd, s, i));
+	else
+		return (write(fd, s, i) + write(fd, "\n", 1));
 }
 
 int	ft_putnbr_fd(int n, int fd)
@@ -41,7 +44,7 @@ int	ft_atoi_p(char *s, int *n)
 	while (('\t' <= *s && *s <= '\r') || *s == ' ')
 		s++;
 	m = (*s == '-');
-	s += (*s == '+' || *s =='-');
+	s += (*s == '+' || *s == '-');
 	while (*s)
 	{
 		if (*s < '0' || '9' < *s || (*n > INT_MAX / b)
