@@ -41,7 +41,7 @@ void	sig(int sn)
 	if (sn == SIGUSR1)
 		g_flag = 1;
 	else if (sn == SIGUSR2)
-		g_flag = 2;
+		exit(0);
 }
 
 int	main(int ac, char **av)
